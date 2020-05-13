@@ -1,68 +1,40 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# 리액트 토이 프로젝트 [N-Back]
 
-## Available Scripts
+### 시작...
 
-In the project directory, you can run:
+'문제적 남자'에서 다뤘고, 요즘 핫한 AI 면접에도 등장하는 N-Back 게임을 구현해보려고 한다.
 
-### `yarn start`
+계기는 단순하다. 
+- 오늘 AI 면접을 보면서 게임에 흥미가 생김.
+- 구현이 쉬울 것 같은 설레발.
+- Frontend 와 친해지고 싶어서.
+- 
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+### N-Back 게임?
 
-### `yarn test`
+<p><a href="https://commons.wikimedia.org/wiki/File:Single_n-back_task_animation.gif#/media/File:Single_n-back_task_animation.gif"><img src="https://upload.wikimedia.org/wikipedia/commons/7/7b/Single_n-back_task_animation.gif" alt="Single n-back task animation.gif"></a><br>By <a href="//commons.wikimedia.org/wiki/User:Pedros.lol" title="User:Pedros.lol">Pedros.lol</a> - <span class="int-own-work" lang="en">Own work</span>, <a href="https://creativecommons.org/licenses/by-sa/4.0" title="Creative Commons Attribution-Share Alike 4.0">CC BY-SA 4.0</a>, <a href="https://commons.wikimedia.org/w/index.php?curid=39241201">Link</a></p>
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+출처 : https://en.wikipedia.org/wiki/N-back
 
-### `yarn build`
+2-Back 이라면 2회차 전에 표시된 위치와 현재 표시된 위치가 동일한지 아닌지를 판단하면 된다. 3-Back 이면 3회차 전에, 4-Back 이면 4회차 전에...
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### 대략적인 로직
 
-### `yarn eject`
+0. N-Back의 N과 실행 횟수 결정.
+1. grid 3x4 영역을 만든다.
+2. 3x4 영역의 각 칸에  0,1,2,3 // 4,5,6,7 // 8,9,10,11 번호를 매긴다.
+3. 숫자를 랜덤 생성하고 진행 상황을 보관하는 덱의 뒷 부분에 숫자를 삽입한다.
+4. 랜덤 생성한 숫자와 매칭되는 영역을 색칠한다. 1초 동안 색을 유지하고 1.5초간 사라진다.
+5. 색이 유지되는 동안 O,X 입력은 최초 1회만 받는다.
+6. 덱에 N+1개 만큼 저장이 되면 덱의 첫 원소와 마지막 원소의 동일 여부를 판단하고 입력받은 O,X를 비교해 정답 여부를 따로 저장해둔다.
+7. 덱의 첫번째 원소를 제거 후 다시 3. 으로 이동. 0. 에서 설정한 실행 횟수를 채웠으면 종료.
+8. 저장해둔 정답 여부를 결과로 출력하고 다시 0.으로 이동할 수 있도록 로직 및 UI 구현.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### 블로그 
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+https://velog.io/@unknown9732
