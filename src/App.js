@@ -3,6 +3,7 @@ import Container from "./components/Container";
 import Blocks from "./components/Blocks";
 import ShowResult from "./components/ShowResult";
 import StyleButton from "./components/StyleButton";
+import InputForm from "./components/InputForm";
 
 function makeRandom() {
     const rand = [];
@@ -16,16 +17,20 @@ function makeRandom() {
 
 const App = () => {
 
+    const [gameNum, setGameNum] = useState(2);
+    const [gameCnt, setGameCnt] = useState(20);
     const [start, setStart] = useState(true); // 입력 받기 전
     const [end, setEnd] = useState(false) // 게임 종료 플래그
     const [num, setNum] = useState(12); // Container에 전달할 props. 12는 위치 표시 OFF 상태 의미
     const [flag, setFlag] = useState(false); // 응답 여부 플래그
     const [answers, setAnswers] = useState({}); // O,X 응답 결과 객체
+
     const rand = useRef(makeRandom()); // 난수 배열
     const idx = useRef(0); // 난수 배열 인덱스
 
     const handleOnClick = () => {
         setStart(false);
+        console.log(gameNum + " " + gameCnt);
 
         const interval = setInterval(() => {
             setNum(rand.current[idx.current]);
@@ -40,7 +45,7 @@ const App = () => {
                 idx.current++;
             }, 1400)
 
-            if (idx.current === 5) {
+            if (idx.current === gameCnt) {
                 clearInterval(interval);
                 console.log(" 인터벌 종료")
                 setEnd(true);
@@ -65,12 +70,11 @@ const App = () => {
     return (
         <div>
             {
-                start ?
+                start ? <InputForm handleOnClick={handleOnClick}
+                                   setGameNum={setGameNum}
+                                   setGameCnt={setGameCnt}
 
-                    <div style={{ textAlign: "center" }}>
-                        N, Count 입력 받기 구현 예정 ㅎㅎ
-                        <StyleButton onClick={handleOnClick}>게임 시작</StyleButton>
-                    </div>
+                    />
 
                     :
 
@@ -79,7 +83,7 @@ const App = () => {
                             <Blocks/>
 
                             {
-                                (flag && idx.current >= 2) ?
+                                (flag && idx.current >= gameNum) ?
                                     <>
                                         <StyleButton style={{ gridColumn: '1 / 3', marginRight: "3rem" }}
                                                      onClick={() => handleAnswerOnClick(flag, 'O')}
@@ -104,8 +108,8 @@ const App = () => {
                                     >
                                         결과보기
                                     </StyleButton>
-                                    :
-                                    <span> </span>
+
+                                    : <span> </span>
 
                             }
 
