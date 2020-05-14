@@ -25,6 +25,7 @@ const App = () => {
             setNum(rand.current[intervalCnt]);
             console.log(rand.current[intervalCnt] + " 켜기");
 
+
             setTimeout(() => {
                 setNum(12);
                 intervalCnt++;
@@ -40,7 +41,7 @@ const App = () => {
     }
 
     return (
-        <>
+        <div>
             {
                 start ?
 
@@ -51,12 +52,15 @@ const App = () => {
 
                     :
 
-                    <Container num={num}>
-                        <Blocks/>
-                    </Container>
-
+                    <div>
+                        <Container num={num}>
+                            <Blocks/>
+                            <button style={{gridColumn: '1 / 3'}}>O</button>
+                            <button style={{gridColumn: '3 / 5'}}>X</button>
+                        </Container>
+                    </div>
             }
-        </>
+        </div>
     )
 }
 
