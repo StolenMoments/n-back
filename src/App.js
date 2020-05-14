@@ -15,6 +15,8 @@ const App = () => {
 
     const [start, setStart] = useState(true); // 입력 받기 전
     const [num, setNum] = useState(12); // Container에 전달할 props
+    const [flag, setFlag] = useState(false);
+    const [result, setResult] = useState([]);
     const rand = useRef(makeRandom());
 
     const handleOnClick = () => {
@@ -24,12 +26,14 @@ const App = () => {
         const interval = setInterval(() => {
             setNum(rand.current[intervalCnt]);
             console.log(rand.current[intervalCnt] + " 켜기");
+            setFlag(true);
 
 
             setTimeout(() => {
                 setNum(12);
                 intervalCnt++;
                 console.log("위치 표시 끄기");
+                setFlag(false);
             }, 1000)
 
             if (intervalCnt === 5) {
@@ -40,12 +44,21 @@ const App = () => {
         },3000)
     }
 
+    const handleAnswerOnClick = (flag, type) => {
+        if (flag) {
+            setResult(result.concat(type));
+            console.log(type + ' 푸시')
+            setFlag(false);
+        }
+    }
+
+
     return (
         <div>
             {
                 start ?
 
-                    <div>
+                    <div style={{textAlign: "center"}}>
                         N, Count 입력 받기 구현 예정 ㅎㅎ
                         <button onClick={handleOnClick}>게임 시작</button>
                     </div>
@@ -55,8 +68,9 @@ const App = () => {
                     <div>
                         <Container num={num}>
                             <Blocks/>
-                            <button style={{gridColumn: '1 / 3'}}>O</button>
-                            <button style={{gridColumn: '3 / 5'}}>X</button>
+                            <button style={{gridColumn: '1 / 3', marginRight: "3rem"}} onClick={() => handleAnswerOnClick(flag, 'O')}>O</button>
+                            <button style={{gridColumn: '3 / 5', marginLeft: "3rem"}} onClick={() => handleAnswerOnClick(flag, 'X')}>X</button>
+                            <button style={{gridRow: '5', gridColumn:'2 / 4'}} onClick={() => console.log(result)}>결과보기</button>
                         </Container>
                     </div>
             }
