@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
-import Container from "./Container";
-import Blocks from "./Blocks";
+import Container from "./components/Container";
+import Blocks from "./components/Blocks";
 import Button from "@material-ui/core/Button";
 
 function makeRandom() {
