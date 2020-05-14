@@ -17,6 +17,7 @@ function makeRandom() {
 const App = () => {
 
     const [start, setStart] = useState(true); // 입력 받기 전
+    const [end, setEnd] = useState(false) // 게임 종료 플래그
     const [num, setNum] = useState(12); // Container에 전달할 props. 12는 위치 표시 OFF 상태 의미
     const [flag, setFlag] = useState(false); // 응답 여부 플래그
     const [answers, setAnswers] = useState({}); // O,X 응답 결과 객체
@@ -37,14 +38,15 @@ const App = () => {
                 console.log("위치 표시 끄기");
                 setFlag(false);
                 idx.current++;
-            }, 1500)
+            }, 1400)
 
             if (idx.current === 5) {
                 clearInterval(interval);
                 console.log(" 인터벌 종료")
+                setEnd(true);
             }
 
-        }, 2500)
+        }, 2800)
     }
 
     const handleAnswerOnClick = (flag, type) => {
@@ -76,23 +78,37 @@ const App = () => {
                         <Container num={num}>
                             <Blocks/>
 
-                            <StyleButton style={{ gridColumn: '1 / 3', marginRight: "3rem" }}
-                                         onClick={() => handleAnswerOnClick(flag, 'O')}
-                            >
-                                O
-                            </StyleButton>
+                            {
+                                (flag && idx.current >= 2) ?
+                                    <>
+                                        <StyleButton style={{ gridColumn: '1 / 3', marginRight: "3rem" }}
+                                                     onClick={() => handleAnswerOnClick(flag, 'O')}
+                                        >
+                                            O
+                                        </StyleButton>
 
-                            <StyleButton style={{ gridColumn: '3 / 5', marginLeft: "3rem" }}
-                                         onClick={() => handleAnswerOnClick(flag, 'X')}
-                            >
-                                X
-                            </StyleButton>
+                                        <StyleButton style={{ gridColumn: '3 / 5', marginLeft: "3rem" }}
+                                                     onClick={() => handleAnswerOnClick(flag, 'X')}
+                                        >
+                                            X
+                                        </StyleButton>
+                                    </>
 
-                            <StyleButton style={{ gridRow: '5', gridColumn: '2 / 4', background: "aqua" }}
-                                         onClick={() => ShowResult(2, rand.current, answers)}
-                            >
-                                결과보기
-                            </StyleButton>
+                                    : <span> </span>
+                            }
+
+                            {
+                                end ?
+                                    <StyleButton style={{ gridRow: '5', gridColumn: '2 / 4', background: "aqua" }}
+                                                 onClick={() => ShowResult(2, rand.current, answers)}
+                                    >
+                                        결과보기
+                                    </StyleButton>
+                                    :
+                                    <span> </span>
+
+                            }
+
                         </Container>
                     </div>
             }
