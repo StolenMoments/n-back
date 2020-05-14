@@ -9,7 +9,12 @@ export default styled.div`
  
   div {
     border-style: solid;
-    border-color: black;
+    border-color: darkblue;
     border-width: 1px;
   }
+  
+  #id${props => props.num} {
+    background: greenyellow;
+  }
+  
 `
