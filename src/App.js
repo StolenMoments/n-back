@@ -17,38 +17,38 @@ function makeRandom() {
 
 const App = () => {
 
-    const [gameNum, setGameNum] = useState(2);
-    const [gameCnt, setGameCnt] = useState(20);
-    const [start, setStart] = useState(true); // 입력 받기 전
-    const [end, setEnd] = useState(false) // 게임 종료 플래그
-    const [num, setNum] = useState(12); // Container에 전달할 props. 12는 위치 표시 OFF 상태 의미
-    const [flag, setFlag] = useState(false); // 응답 여부 플래그
-    const [answers, setAnswers] = useState({}); // O,X 응답 결과 객체
+    const [n, setN] = useState(2); // n-back의 n..
+    const [gameCnt, setGameCnt] = useState(20); // 게임 횟수
+    const [inputNeeded, setInputNeeded] = useState(true); // 입력 받기 전
+    const [isGameEnd, setIsGameEnd] = useState(false) // 게임 종료 플래그
+    const [divNum, setDivNum] = useState(12); // Container에 전달할 props. 12는 위치 표시 OFF 상태 의미
+    const [inputAvailable, setInputAvailable] = useState(false); // 응답 여부 플래그
+    const [userInput, setUserInput] = useState({}); // O,X 응답 결과 객체
 
     const rand = useRef(makeRandom()); // 난수 배열
     const idx = useRef(0); // 난수 배열 인덱스
 
     const handleOnClick = () => {
-        setStart(false);
-        console.log(gameNum + " " + gameCnt);
+        setInputNeeded(false);
+        console.log(n + " " + gameCnt);
 
         const interval = setInterval(() => {
-            setNum(rand.current[idx.current]);
+            setDivNum(rand.current[idx.current]);
             console.log(rand.current[idx.current] + " 켜기");
-            setFlag(true);
+            setInputAvailable(true);
 
 
             setTimeout(() => {
-                setNum(12);
+                setDivNum(12);
                 console.log("위치 표시 끄기");
-                setFlag(false);
+                setInputAvailable(false);
                 idx.current++;
             }, 1400)
 
             if (idx.current === gameCnt) {
                 clearInterval(interval);
                 console.log(" 인터벌 종료")
-                setEnd(true);
+                setIsGameEnd(true);
             }
 
         }, 2800)
@@ -56,13 +56,13 @@ const App = () => {
 
     const handleAnswerOnClick = (flag, type) => {
         if (flag) {
-            setAnswers({
-                    ...answers,
+            setUserInput({
+                    ...userInput,
                     [idx.current]: type
                 }
             );
             console.log(type + ' 추가')
-            setFlag(false);
+            setInputAvailable(false);
         }
     }
 
@@ -70,8 +70,8 @@ const App = () => {
     return (
         <div>
             {
-                start ? <InputForm handleOnClick={handleOnClick}
-                                   setGameNum={setGameNum}
+                inputNeeded ? <InputForm handleOnClick={handleOnClick}
+                                   setGameNum={setN}
                                    setGameCnt={setGameCnt}
 
                     />
@@ -79,20 +79,20 @@ const App = () => {
                     :
 
                     <div>
-                        <Container num={num}>
+                        <Container num={divNum}>
                             <Blocks/>
 
                             {
-                                (flag && idx.current >= gameNum) ?
+                                (inputAvailable && idx.current >= n) ?
                                     <>
                                         <StyleButton style={{ gridColumn: '1 / 3', marginRight: "3rem" }}
-                                                     onClick={() => handleAnswerOnClick(flag, 'O')}
+                                                     onClick={() => handleAnswerOnClick(inputAvailable, 'O')}
                                         >
                                             O
                                         </StyleButton>
 
                                         <StyleButton style={{ gridColumn: '3 / 5', marginLeft: "3rem" }}
-                                                     onClick={() => handleAnswerOnClick(flag, 'X')}
+                                                     onClick={() => handleAnswerOnClick(inputAvailable, 'X')}
                                         >
                                             X
                                         </StyleButton>
@@ -102,9 +102,9 @@ const App = () => {
                             }
 
                             {
-                                end ?
+                                isGameEnd ?
                                     <StyleButton style={{ gridRow: '5', gridColumn: '2 / 4', background: "aqua" }}
-                                                 onClick={() => ShowResult(2, rand.current, answers)}
+                                                 onClick={() => ShowResult(2, rand.current, userInput)}
                                     >
                                         결과보기
                                     </StyleButton>
