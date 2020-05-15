@@ -23,7 +23,7 @@ const App = () => {
     const [isGameEnd, setIsGameEnd] = useState(false) // 게임 종료 플래그
     const [divNum, setDivNum] = useState(12); // Container에 전달할 props. 12는 위치 표시 OFF 상태 의미
     const [inputAvailable, setInputAvailable] = useState(false); // 응답 여부 플래그
-    const [userInput, setUserInput] = useState({}); // O,X 응답 결과 객체
+    const [userInputList, setUserInputList] = useState({}); // O,X 응답 결과 객체
 
     const randList = useRef(makeRandom()); // 난수 배열
     const idx = useRef(0); // 난수 배열 인덱스
@@ -54,14 +54,14 @@ const App = () => {
         }, 2800)
     }
 
-    const handleAnswerOnClick = (flag, type) => {
-        if (flag) {
-            setUserInput({
-                    ...userInput,
-                    [idx.current]: type
+    const handleAnswerOnClick = (inputAvailable, inputType) => {
+        if (inputAvailable) {
+            setUserInputList({
+                    ...inputAvailable,
+                    [idx.current]: inputType
                 }
             );
-            console.log(type + ' 추가')
+            console.log(inputType + ' 추가')
             setInputAvailable(false);
         }
     }
@@ -71,8 +71,8 @@ const App = () => {
         <div>
             {
                 inputNeeded ? <InputForm handleOnClick={handleOnClick}
-                                   setGameNum={setN}
-                                   setGameCnt={setGameCnt}
+                                         setGameNum={setN}
+                                         setGameCnt={setGameCnt}
 
                     />
 
@@ -104,7 +104,7 @@ const App = () => {
                             {
                                 isGameEnd ?
                                     <StyleButton style={{ gridRow: '5', gridColumn: '2 / 4', background: "aqua" }}
-                                                 onClick={() => ShowResult(2, randList.current, userInput)}
+                                                 onClick={() => ShowResult(2, randList.current, userInputList)}
                                     >
                                         결과보기
                                     </StyleButton>
