@@ -12,6 +12,7 @@
 - 게임 설명 추가하기
 - 코드 리팩토링 :shit:
 - 이쁘게 만들기 :cherry_blossom:
+- S10 기준, 화면 잘 보이게 만들기. :no_mobile_phones:
 
 
 ---
