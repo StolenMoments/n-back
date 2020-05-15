@@ -25,7 +25,7 @@ const App = () => {
     const [inputAvailable, setInputAvailable] = useState(false); // 응답 여부 플래그
     const [userInput, setUserInput] = useState({}); // O,X 응답 결과 객체
 
-    const rand = useRef(makeRandom()); // 난수 배열
+    const randList = useRef(makeRandom()); // 난수 배열
     const idx = useRef(0); // 난수 배열 인덱스
 
     const handleOnClick = () => {
@@ -33,8 +33,8 @@ const App = () => {
         console.log(n + " " + gameCnt);
 
         const interval = setInterval(() => {
-            setDivNum(rand.current[idx.current]);
-            console.log(rand.current[idx.current] + " 켜기");
+            setDivNum(randList.current[idx.current]);
+            console.log(randList.current[idx.current] + " 켜기");
             setInputAvailable(true);
 
 
@@ -104,7 +104,7 @@ const App = () => {
                             {
                                 isGameEnd ?
                                     <StyleButton style={{ gridRow: '5', gridColumn: '2 / 4', background: "aqua" }}
-                                                 onClick={() => ShowResult(2, rand.current, userInput)}
+                                                 onClick={() => ShowResult(2, randList.current, userInput)}
                                     >
                                         결과보기
                                     </StyleButton>
