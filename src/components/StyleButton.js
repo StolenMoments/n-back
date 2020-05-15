@@ -4,6 +4,6 @@ import { Button } from "@material-ui/core";
 export default withStyles({
     root: {
         background: "aquamarine",
-        fontSize: "30px"
+        fontSize: "25px"
     }
 })(Button)

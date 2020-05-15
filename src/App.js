@@ -5,31 +5,31 @@ import ShowResult from "./components/ShowResult";
 import StyleButton from "./components/StyleButton";
 import InputForm from "./components/InputForm";
 
-function makeRandom() {
+function makeRandom(gameCnt) {
     const rand = [];
 
-    for (let i = 0; i < 20; i++)
+    for (let i = 0; i < gameCnt; i++)
         rand.push(Math.floor(Math.random() * 12));
 
     return rand;
 }
 
-
 const App = () => {
 
     const [n, setN] = useState(2); // n-back의 n..
-    const [gameCnt, setGameCnt] = useState(20); // 게임 횟수
+    const [gameCnt, setGameCnt] = useState(10); // 게임 횟수
     const [inputNeeded, setInputNeeded] = useState(true); // 입력 받기 전
     const [isGameEnd, setIsGameEnd] = useState(false) // 게임 종료 플래그
     const [divNum, setDivNum] = useState(12); // Container에 전달할 props. 12는 위치 표시 OFF 상태 의미
     const [inputAvailable, setInputAvailable] = useState(false); // 응답 여부 플래그
     const [userInputList, setUserInputList] = useState({}); // O,X 응답 결과 객체
 
-    const randList = useRef(makeRandom()); // 난수 배열
+    const randList = useRef([]); // 난수 배열
     const idx = useRef(0); // 난수 배열 인덱스
 
     const handleOnClick = () => {
         setInputNeeded(false);
+        randList.current = makeRandom(gameCnt);
         console.log(n + " " + gameCnt);
 
         const interval = setInterval(() => {
@@ -43,21 +43,21 @@ const App = () => {
                 console.log("위치 표시 끄기");
                 setInputAvailable(false);
                 idx.current++;
-            }, 1400)
+            }, 1000)
 
             if (idx.current === gameCnt) {
                 clearInterval(interval);
                 console.log(" 인터벌 종료")
-                setIsGameEnd(true);
+                setTimeout(() => setIsGameEnd(true), 1000);
             }
 
-        }, 2800)
+        }, 2000)
     }
 
     const handleAnswerOnClick = (inputAvailable, inputType) => {
         if (inputAvailable) {
             setUserInputList({
-                    ...inputAvailable,
+                    ...userInputList,
                     [idx.current]: inputType
                 }
             );
@@ -71,10 +71,8 @@ const App = () => {
         <div>
             {
                 inputNeeded ? <InputForm handleOnClick={handleOnClick}
-                                         setGameNum={setN}
-                                         setGameCnt={setGameCnt}
-
-                    />
+                                         setN={setN}
+                                         setGameCnt={setGameCnt} />
 
                     :
 
@@ -82,7 +80,7 @@ const App = () => {
                         <Container num={divNum}>
                             <Blocks/>
 
-                            {
+                            { // 입력이 가능할 때 O, X 버튼 표시
                                 (inputAvailable && idx.current >= n) ?
                                     <>
                                         <StyleButton style={{ gridColumn: '1 / 3', marginRight: "3rem" }}
@@ -101,7 +99,7 @@ const App = () => {
                                     : <span> </span>
                             }
 
-                            {
+                            { // 게임 끝나면 결과보기 가능
                                 isGameEnd ?
                                     <StyleButton style={{ gridRow: '5', gridColumn: '2 / 4', background: "aqua" }}
                                                  onClick={() => ShowResult(2, randList.current, userInputList)}
