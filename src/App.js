@@ -31,12 +31,19 @@ const App = () => {
         setInputNeeded(false);
         randList.current = makeRandom(gameCnt);
         console.log(n + " " + gameCnt);
+        console.log(randList.current)
 
         const interval = setInterval(() => {
             setDivNum(randList.current[idx.current]);
             console.log(randList.current[idx.current] + " 켜기");
             setInputAvailable(true);
 
+
+            if (idx.current + 1 === gameCnt) {
+                clearInterval(interval);
+                console.log(" 인터벌 종료")
+                setTimeout(() => setIsGameEnd(true), 1000);
+            }
 
             setTimeout(() => {
                 setDivNum(12);
@@ -45,11 +52,6 @@ const App = () => {
                 idx.current++;
             }, 1000)
 
-            if (idx.current === gameCnt) {
-                clearInterval(interval);
-                console.log(" 인터벌 종료")
-                setTimeout(() => setIsGameEnd(true), 1000);
-            }
 
         }, 2000)
     }
@@ -72,7 +74,7 @@ const App = () => {
             {
                 inputNeeded ? <InputForm handleOnClick={handleOnClick}
                                          setN={setN}
-                                         setGameCnt={setGameCnt} />
+                                         setGameCnt={setGameCnt}/>
 
                     :
 
@@ -99,18 +101,39 @@ const App = () => {
                                     : <span> </span>
                             }
 
-                            { // 게임 끝나면 결과보기 가능
+                            { // 게임 끝나면 결과보기, 다시하기 버튼 보이기 가능
                                 isGameEnd ?
-                                    <StyleButton style={{ gridRow: '5', gridColumn: '2 / 4', background: "aqua" }}
-                                                 onClick={() => ShowResult(2, randList.current, userInputList)}
-                                    >
-                                        결과보기
-                                    </StyleButton>
+                                    <>
+                                        <StyleButton style={{
+                                            gridRow: '5',
+                                            gridColumn: '1 / 3',
+                                            background: "black",
+                                            color: "white"
+                                        }}
+                                                     onClick={() => ShowResult(2, randList.current, userInputList)}
+                                        >
+                                            결과보기
+                                        </StyleButton>
+                                        <StyleButton style={{
+                                                        gridRow: '5',
+                                                        gridColumn: '3 / 5',
+                                                        background: "black",
+                                                        color: "white"
+                                        }}
+                                                     onClick={() => {
+                                                         idx.current = 0;
+                                                         setInputAvailable(true);
+                                                         setInputNeeded(true);
+                                                         setIsGameEnd(false);
+                                                     }}
+                                        >
+                                            다시하기
+                                        </StyleButton>
+                                    </>
 
                                     : <span> </span>
 
                             }
-
                         </Container>
                     </div>
             }
