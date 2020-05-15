@@ -30,24 +30,19 @@ const App = () => {
     const handleOnClick = () => {
         setInputNeeded(false);
         randList.current = makeRandom(gameCnt);
-        console.log(n + " " + gameCnt);
-        console.log(randList.current)
 
         const interval = setInterval(() => {
             setDivNum(randList.current[idx.current]);
-            console.log(randList.current[idx.current] + " 켜기");
             setInputAvailable(true);
 
 
             if (idx.current + 1 === gameCnt) {
                 clearInterval(interval);
-                console.log(" 인터벌 종료")
                 setTimeout(() => setIsGameEnd(true), 1000);
             }
 
             setTimeout(() => {
                 setDivNum(12);
-                console.log("위치 표시 끄기");
                 setInputAvailable(false);
                 idx.current++;
             }, 1000)
@@ -63,7 +58,6 @@ const App = () => {
                     [idx.current]: inputType
                 }
             );
-            console.log(inputType + ' 추가')
             setInputAvailable(false);
         }
     }
@@ -71,10 +65,15 @@ const App = () => {
 
     return (
         <div>
+
             {
-                inputNeeded ? <InputForm handleOnClick={handleOnClick}
-                                         setN={setN}
-                                         setGameCnt={setGameCnt}/>
+                inputNeeded ?
+                    <>
+                        <div style={{textAlign: "center", fontSize:"3rem"}}>N-Back : {n}-Back, 게임 횟수 : {gameCnt} </div>
+                        <InputForm handleOnClick={handleOnClick}
+                                   setN={setN}
+                                   setGameCnt={setGameCnt}/>
+                    </>
 
                     :
 
@@ -115,10 +114,10 @@ const App = () => {
                                             결과보기
                                         </StyleButton>
                                         <StyleButton style={{
-                                                        gridRow: '5',
-                                                        gridColumn: '3 / 5',
-                                                        background: "black",
-                                                        color: "white"
+                                            gridRow: '5',
+                                            gridColumn: '3 / 5',
+                                            background: "black",
+                                            color: "white"
                                         }}
                                                      onClick={() => {
                                                          idx.current = 0;
