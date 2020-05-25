@@ -2,7 +2,7 @@
 
 
 ## :fire: Version 0.1 (2020-05-15)
-- [게임해보기](http://ec2-13-124-91-36.ap-northeast-2.compute.amazonaws.com)
+- -- [게임해보기](http://ec2-13-124-91-36.ap-northeast-2.compute.amazonaws.com) -- 서버 
 - 2-back, 3-back 선택 가능
 - 게임 횟수는 10회, 20회 선택 가능
 - ~~디자인은 집어치우고~~ 게임 기능만 최소로 구현
