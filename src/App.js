@@ -64,7 +64,7 @@ const App = () => {
 
 
     return (
-        <div>
+        <>
 
             {
                 inputNeeded ?
@@ -77,7 +77,7 @@ const App = () => {
 
                     :
 
-                    <div>
+                    <>
                         <Container num={divNum}>
                             <Blocks/>
 
@@ -134,9 +134,9 @@ const App = () => {
 
                             }
                         </Container>
-                    </div>
+                    </>
             }
-        </div>
+        </>
     )
 }
 
