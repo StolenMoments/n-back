@@ -35,8 +35,7 @@ const App = () => {
             setDivNum(randList.current[idx.current]);
             setInputAvailable(true);
 
-
-            if (idx.current + 1 === gameCnt) {
+            if (idx.current > gameCnt) {
                 clearInterval(interval);
                 setTimeout(() => setIsGameEnd(true), 1000);
             }
@@ -46,8 +45,6 @@ const App = () => {
                 setInputAvailable(false);
                 idx.current++;
             }, 1000)
-
-
         }, 2000)
     }
 
@@ -65,11 +62,12 @@ const App = () => {
 
     return (
         <>
-
             {
                 inputNeeded ?
                     <>
-                        <div style={{textAlign: "center", fontSize:"3rem"}}>N-Back : {n}-Back, 게임 횟수 : {gameCnt} </div>
+                        <header style={{ textAlign: "center", fontSize: "3rem" }}>
+                            N-Back : {n}-Back, 게임 횟수 : {gameCnt}
+                        </header>
                         <InputForm handleOnClick={handleOnClick}
                                    setN={setN}
                                    setGameCnt={setGameCnt}/>
@@ -80,7 +78,6 @@ const App = () => {
                     <>
                         <Container num={divNum}>
                             <Blocks/>
-
                             { // 입력이 가능할 때 O, X 버튼 표시
                                 (inputAvailable && idx.current >= n) ?
                                     <>
