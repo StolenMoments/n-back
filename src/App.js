@@ -1,9 +1,10 @@
 import React, { useRef, useState } from 'react';
 import Container from "./components/Container";
 import Blocks from "./components/Blocks";
-import ShowResult from "./components/ShowResult";
+import getResult from "./components/getResult";
 import StyleButton from "./components/StyleButton";
 import InputForm from "./components/InputForm";
+import styled from 'styled-components'
 
 function makeRandom(gameCnt) {
     const rand = [];
@@ -14,6 +15,38 @@ function makeRandom(gameCnt) {
     return rand;
 }
 
+const Modal = styled.div`
+  z-index: 2;
+  box-sizing: border-box;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  background: gray;
+  opacity: 0.5;
+`
+
+const ResultWrapper = styled.div`
+  z-index: 3;
+  box-sizing: border-box;
+  border-radius: 2rem;
+  position: absolute;
+  text-align: center;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 30%;
+  height: 40%;
+  background: white;
+`
+
+const ResultBlock = styled.div`
+  display: grid;
+  grid-template-columns: repeat(5, 20%);
+  grid-template-rows: 100px 100px;
+  justify-content: center;
+`
+
 const App = () => {
 
     const [n, setN] = useState(2); // n-back의 n..
@@ -23,6 +56,8 @@ const App = () => {
     const [divNum, setDivNum] = useState(12); // Container에 전달할 props. 12는 위치 표시 OFF 상태 의미
     const [inputAvailable, setInputAvailable] = useState(false); // 응답 여부 플래그
     const [userInputList, setUserInputList] = useState({}); // O,X 응답 결과 객체
+    const [modalState, setModalState] = useState(false);
+    const [results, setResults] = useState([]);
 
     const randList = useRef([]); // 난수 배열
     const idx = useRef(0); // 난수 배열 인덱스
@@ -35,7 +70,7 @@ const App = () => {
             setDivNum(randList.current[idx.current]);
             setInputAvailable(true);
 
-            if (idx.current > gameCnt) {
+            if (idx.current + 1 === gameCnt) {
                 clearInterval(interval);
                 setTimeout(() => setIsGameEnd(true), 1000);
             }
@@ -62,6 +97,27 @@ const App = () => {
 
     return (
         <>
+            {
+                modalState ?
+                    <>
+                        <Modal onClick={() => setModalState(false)}/>
+                        <ResultWrapper>
+                            <ResultBlock>
+                                {
+                                    results.map(result => {
+                                        return (
+                                            <div>
+                                                {result}
+                                            </div>
+                                        )
+                                    })
+                                }
+                            </ResultBlock>
+                        </ResultWrapper>
+                    </>
+                    :
+                    <div></div>
+            }
             {
                 inputNeeded ?
                     <>
@@ -106,7 +162,10 @@ const App = () => {
                                             background: "black",
                                             color: "white"
                                         }}
-                                                     onClick={() => ShowResult(2, randList.current, userInputList)}
+                                                     onClick={() => {
+                                                         setResults(getResult(n, randList.current, userInputList));
+                                                         setModalState(true)
+                                                     }}
                                         >
                                             결과보기
                                         </StyleButton>

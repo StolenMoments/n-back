@@ -1,18 +1,19 @@
 export default (N, randList, userInputList) => {
-    const result = {};
+    const result = [];
 
     for (let i = N; i < randList.length; i++) {
-        if (!userInputList.hasOwnProperty(i)) result[i + 1] = 'N';
+        console.log(i);
+        if (!userInputList.hasOwnProperty(i)) result.push('N');
 
         else if (
             (randList[i] === randList[i - N] && userInputList[i] === 'O')
             ||
             (randList[i] !== randList[i - N] && userInputList[i] === 'X')
         )
-            result[i + 1] = 'O';
+            result.push('O');
 
         else
-            result[i + 1] = 'X';
+            result.push('X');
     }
 
     return result;
